@@ -13,4 +13,7 @@ void setup(){
 
 void draw(){
  background(0); 
+ 
+ PImage depthImage = kinect.getDepthImage();
+ image(depthImage, 0, 0);
 }
