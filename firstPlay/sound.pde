@@ -1,48 +1,65 @@
-///**
-// * Processing Sound Library, Example 1
-// * 
-// * Five sine waves are layered to construct a cluster of frequencies. 
-// * This method is called additive synthesis. Use the mouse position 
-// * inside the display window to detune the cluster.
-// */
-
 //import processing.sound.*;
 
-//SinOsc[] sineWaves; // Array of sines
-//float[] sineFreq; // Array of frequencies
-//int numSines = 5; // Number of oscillators to use
+//// Oscillator and envelope 
+//TriOsc triOsc;
+//Env env; 
 
-//void setup() {  
+//// Times and levels for the ASR envelope
+//float attackTime = 0.001;
+//float sustainTime = 0.004;
+//float sustainLevel = 0.2;
+//float releaseTime = 0.2;
+
+//// This is an octave in MIDI notes.
+//int[] midiSequence = { 
+//  60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72
+//}; 
+
+//// Set the duration between the notes
+//int duration = 200;
+//// Set the note trigger
+//int trigger = 0; 
+
+//// An index to count up the notes
+//int note = 0; 
+
+//void setup() {
 //  //size(640, 480);
 //  background(255);
 
-//  sineWaves = new SinOsc[numSines]; // Initialize the oscillators
-//  sineFreq = new float[numSines]; // Initialize array for Frequencies
-
-  //for (int i = 0; i < numSines; i++) {
-  //  // Calculate the amplitude for each oscillator
-  //  float sineVolume = (1.0 / numSines) / (i + 1);
-  //  // Create the oscillators
-  //  sineWaves[i] = new SinOsc(this);
-  //  // Start Oscillators
-  //  sineWaves[i].play();
-  //  // Set the amplitudes for all oscillators
-  //  sineWaves[i].amp(sineVolume);
-  //}
+//  // Create triangle wave and envelope 
+//  triOsc = new TriOsc(this);
+//  env  = new Env(this);
 //}
 
-//void draw() {
-//  //Map mouseY from 0 to 1
-  //float yoffset = map(mouseY, 0, height, 0, 1);
-  ////Map mouseY logarithmically to 150 - 1150 to create a base frequency range
-  //float frequency = pow(1000, yoffset) + 150;
-  ////Use mouseX mapped from -0.5 to 0.5 as a detune argument
-  //float detune = map(mouseX, 0, width, -0.5, 0.5);
+//void draw() { 
 
-  //for (int i = 0; i < numSines; i++) { 
-  //  sineFreq[i] = frequency * (i + 1 * detune);
-  //  // Set the frequencies for all oscillators
-  //  sineWaves[i].freq(sineFreq[i]);
-  //}
+//  // If value of trigger is equal to the computer clock and if not all 
+//  // notes have been played yet, the next note gets triggered.
+//  if ((millis() > trigger) && (note<midiSequence.length)) {
+
+//    // midiToFreq transforms the MIDI value into a frequency in Hz which we use 
+//    //to control the triangle oscillator with an amplitute of 0.8
+//    triOsc.play(midiToFreq(midiSequence[note]), 0.8);
+
+//    // The envelope gets triggered with the oscillator as input and the times and 
+//    // levels we defined earlier
+//    env.play(triOsc, attackTime, sustainTime, sustainLevel, releaseTime);
+
+//    // Create the new trigger according to predefined durations and speed
+//    trigger = millis() + duration;
+
+//    // Advance by one note in the midiSequence;
+//    note++; 
+
+//    // Loop the sequence
+//    if (note == 12) {
+//      note = 0;
+//    }
+//  }
+//} 
+
+//// This function calculates the respective frequency of a MIDI note
+//float midiToFreq(int note) {
+//  return (pow(2, ((note-69)/12.0)))*440;
 //}
-  
