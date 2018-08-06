@@ -18,7 +18,7 @@ float a = 0;
 
 // This is an harmonic minor scale in MIDI notes.
 int[] midiSequence = { 
-  60, 62, 63, 65, 67, 70, 72
+  52,54,55,57,58,60,61,63,64,66,67,69,70,72,73,75,76,78
 }; 
 //int note = 60;
 int note = 0;
@@ -52,7 +52,7 @@ void draw() {
   translate(width/2, height/2, -2250);
   rotateY(a);
   int[] depth = kinect.getRawDepth();
-  int skip = 20;
+  int skip = 10;
   stroke(255);
   strokeWeight(2);
   beginShape(POINTS);
@@ -60,7 +60,18 @@ void draw() {
     for ( int y = 0; y < kinect.height; y += skip ) {
       int offset = x + y*kinect.width;
       PVector point = depthToPointCloudPos(x, y, depth[offset]);
-      float xoffset = map(x, 0, kinect.width/2, 0, 7);
+      float xoffset = map(x, 0, kinect.width/2, 0, 18);
+      float yoffset = map(x, 0, kinect.height/2, 0, 3);
+      if (yoffset > 0 && yoffset < 1){
+         duration = 100; 
+      }
+      if (yoffset >= 1 && yoffset < 2){
+         duration = 200; 
+      }
+      if (yoffset >= 2 && yoffset < 3){
+         duration = 100; 
+      }
+
       //if (xoffset > -1*pattern.length && xoffset < pattern.length) {
       //  if(xoffset < 0){
       //   int index = pattern.length + int(xoffset);
@@ -96,7 +107,7 @@ void draw() {
     
         // Advance by one note in the midiSequence;
         note++; 
-       if( note == 6) {
+       if( note == 17) {
          note = 0; 
        }
 
