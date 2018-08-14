@@ -5,8 +5,8 @@ import org.openkinect.tests.*;
 import processing.sound.*;
 
 Kinect kinect;
-SoundFile[] beat;
-SoundFile chord;
+SoundFile[] beats;
+SoundFile[] chords;
 PImage img;
 
 float minThreshold = 420;
@@ -27,14 +27,15 @@ void setup() {
   kinect = new Kinect(this); 
   kinect.initDepth();
   
-  beat = new SoundFile[2];
+  beats = new SoundFile[2];
+  chords = new SoundFile[1];
   
-  beat[0] = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/firstPlay/samples/096_squeaky_hiphop.aif");
-  beat[1] = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/firstPlay/samples/096_round-hiphop.aif");
+  beats[0] = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/firstPlay/samples/096_squeaky_hiphop.aif");
+  beats[1] = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/firstPlay/samples/096_round-hiphop.aif");
 
-  chord = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/firstPlay/samples/092_stuttery-clicky-epiano-chord.aif");
-  img = createImage(kinect.width, kinect.height, RGB);
+  chords[0] = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/firstPlay/samples/092_stuttery-clicky-epiano-chord.aif");
   
+  img = createImage(kinect.width, kinect.height, RGB);
 }
 
 void draw() {
@@ -43,12 +44,11 @@ void draw() {
   //minThreshold = map(mouseX, 0, width, 0, 45000);
   //maxThreshold = map(mouseY, 0, height, 0, 45000);
   int[] depth = kinect.getRawDepth();
-  //int closeRecord = 4500;
-  int heightRecord = kinect.height - 50;
-  boolean playChord = false;
-  float sumX = 0;
-  float sumY = 0;
-  float totalPixels = 0;
+  int heightRecordBeat = kinect.height - 50;
+  int heightRecordChord = kinect.height - 50;
+  int chordX = 0;
+  int chordY = 0;
+  
   for ( int x = 0; x < kinect.width; x++ ) {
     for ( int y = 0; y < kinect.height; y++ ) {
       int offset = x + y*kinect.width;
@@ -58,25 +58,17 @@ void draw() {
         float green = map(d, minThreshold, maxThreshold, 0, 255); 
         img.pixels[offset] = color(0,255 - green,0);
       
-        //sumX += x;
-        //sumY += y;
-        //totalPixels++;
-        //if ( d < closeRecord ) {
-        // closeRecord = d; 
-        // rX = x;
-        // rY = y;
-        //}
-        if ( x > 2*kinect.width/3 && y < heightRecord) {
-          heightRecord = y; 
+        if ( x > 2*kinect.width/3 && y < heightRecordBeat) {
+          heightRecordBeat = y; 
           beatX = x;
-          beatX = y;
+          beatY = y;
         }     
         
-        if (x > kinect.width/3 && x < 2*kinect.width/3){
-          playChord = true;
-        } else {
-          playChord = false;
-        }
+        if (x > kinect.width/3 && x < 2*kinect.width/3 && y < heightRecordChord){
+          heightRecordChord = y;
+          chordX = x;
+          chordY = y;
+        } 
         
         
       } else {
@@ -88,32 +80,48 @@ void draw() {
   img.updatePixels();
   image(img, 0, 0);
   
-  // To calculate de average Point
   
-  //float avgX = sumX / totalPixelZs;
-  //float avgY = sumY / totalPixels;
-  //fill(150, 0, 255);
-  //ellipse(avgX, avgY, 64, 64);
-  fill(255);
-  
-  // Showing highest pixel on Screen
-  ellipse(beatX, beatX, 32, 32);
-  stroke(255);
-  
-  if( beatX > 2*kinect.width/3 && millis() > beatTrigger && beatX >= kinect.height/2){
-    beat[0].play(1.0, 1.0);
-    beatTrigger = millis() + int(1000*beat[0].duration());
+  // Showing highest pixel on beat part of Screen
+    fill(255);
+
+  if (beatX != 0 && beatY != 0){
+    ellipse(beatX, beatY, 32, 32);
+    stroke(255);  
   }
   
-  if( beatX > 2*kinect.width/3 && millis() > beatTrigger && beatX < kinect.height/2){
-    beat[1].play(1.0, 1.0);
-    beatTrigger = millis() + int(1000*beat[1].duration());
+
+  // Showing highest pixel on beat part of Screen
+  if(chordX != 0 && chordY != 0){
+    ellipse(chordX, chordY, 32, 32);
+    stroke(255);
+  }
+
+  
+  
+  if( getChordAndBeatByPosition(beatX, beatY) == 10 && millis() > beatTrigger){
+    beats[0].play(1.0, 1.0);
+    beatTrigger = millis() + int(1000*beats[0].duration());
   }
   
-  if (playChord && millis() > chordTrigger){
-    chord.play(96.0/92.0, 1.0);
-    chordTrigger = millis() + int(1000*beat[1].duration());
+  if( getChordAndBeatByPosition(beatX, beatY) == 20 && millis() > beatTrigger){
+    beats[1].play(1.0, 1.0);
+    beatTrigger = millis() + int(1000*beats[1].duration());
   }
+  
+  if ( getChordAndBeatByPosition(chordX,chordY) == 2 && millis() > chordTrigger){
+    // Play II m7 chord
+    chords[0].play(96.0/92.0, 1.0);
+    chordTrigger = millis() + int(1000*chords[0].duration());
+  } else if (getChordAndBeatByPosition(chordX,chordY) == 5 && millis() > chordTrigger) {
+    // Play V 7 chord
+    chords[0].play(96.0/92.0, 1.0);
+    chordTrigger = millis() + int(1000*chords[0].duration());
+  } else if (getChordAndBeatByPosition(chordX,chordY) == 1 && millis() > chordTrigger) {
+  // Play I maj7 chord
+    chords[0].play(96.0/92.0, 1.0);
+    chordTrigger = millis() + int(1000*chords[0].duration());
+  }
+  
   // Draw Interface
   // Verticals
   line(kinect.width/3, kinect.height, kinect.width/3, 0);
@@ -124,6 +132,7 @@ void draw() {
   line(kinect.width/3, kinect.height/3, 2*kinect.width/3, kinect.height/3);
   line(kinect.width/3, 2*kinect.height/3, 2*kinect.width/3, 2*kinect.height/3);
 
+  // Texts
   textSize(20);
   text("Melody", kinect.width/10, 50);
   text("Harmony", kinect.width - 375, 50);
@@ -140,4 +149,23 @@ void draw() {
   //fill(255);
   //textSize(32);
   //text(minThreshold + " " + maxThreshold, 10, 64);
+}
+
+int getChordAndBeatByPosition(int x, int y) {
+  if(x > kinect.width/3 && x < 2*kinect.width/3) {
+    if (y >= 0 && y < kinect.height/3){
+      return 2;
+    } else if (y >= kinect.height/3 && y < 2*kinect.height/3) {
+      return 5;
+    } else if (y >= 2*kinect.height/3 && y < kinect.height) {
+      return 1;
+    }
+  } else if (x > 2*kinect.width/3) {
+    if (y >= kinect.height/2) {
+      return 10;
+    } else {
+      return 20;
+    }
+  }
+  return 0;
 }
