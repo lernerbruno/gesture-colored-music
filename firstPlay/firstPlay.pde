@@ -13,7 +13,7 @@
 //float[] sineFreq; // Array of frequencies
 //int numSines = 5; // Number of oscillators to use
 
-//void setup() { //<>// //<>//
+//void setup() { //<>//
 //  size(640, 480, P3D);
 //  //kinect initialization
 //  kinect = new Kinect(this); 
@@ -36,7 +36,7 @@
 //  }
 //}
 
-//void draw() { //<>// //<>//
+//void draw() { //<>//
 //  background(0); 
 
 //  //PImage depthImage = kinect.getDepthImage();
@@ -71,7 +71,7 @@
 //          // Set the frequencies for all oscillators
 //          sineWaves[i].freq(sineFreq[i]);
 //        }
-//      } //<>// //<>//
+//      } //<>//
 //      vertex(point.x, point.y, point.z);
 //    }
 //  }

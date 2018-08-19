@@ -39,9 +39,9 @@
 //  kinect = new Kinect(this); 
 //  kinect.initDepth();
   
-//  // Create triangle wave and envelope 
-//  triOsc = new TriOsc(this);
-//  env  = new Env(this);
+  //// Create triangle wave and envelope 
+  //triOsc = new TriOsc(this);
+  //env  = new Env(this);
 //}
 
 //void draw() {
@@ -93,25 +93,25 @@
 //      int flanger = int(yoffset);
 //      if ((millis() > trigger) && note > 0 && note < midiSequence.length && point.z < 500) {
 
-//        // midiToFreq transforms the MIDI value into a frequency in Hz which we use 
-//        //to control the triangle oscillator with an amplitute of 0.8
-//        //triOsc.play(midiToFreq(midiSequence[int(yoffset)]), 0.8);
-//        triOsc.play(midiToFreq(midiSequence[note], 0), 0.8);
-//        //triOsc.play(midiToFreq(midiSequence[note], flanger), 0.8);
-//        //triOsc.play(midiToFreq(note), 0.8);
+        // midiToFreq transforms the MIDI value into a frequency in Hz which we use 
+        //to control the triangle oscillator with an amplitute of 0.8
+        //triOsc.play(midiToFreq(midiSequence[int(yoffset)]), 0.8);
+        //triOsc.play(midiToFreq(midiSequence[note], 0), 0.8);
+        //triOsc.play(midiToFreq(midiSequence[note], flanger), 0.8);
+        //triOsc.play(midiToFreq(note), 0.8);
     
-//        // The envelope gets triggered with the oscillator as input and the times and 
-//        // levels we defined earlier
-//        env.play(triOsc, attackTime, sustainTime, sustainLevel, releaseTime);
+        // The envelope gets triggered with the oscillator as input and the times and 
+        // levels we defined earlier
+        //env.play(triOsc, attackTime, sustainTime, sustainLevel, releaseTime);
     
-//        // Create the new trigger according to predefined durations and speed
-//        trigger = millis() + duration;
+        //// Create the new trigger according to predefined durations and speed
+        //trigger = millis() + duration;
     
-//        // Advance by one note in the midiSequence;
-//        note++; 
-//       if( note == 17) {
-//         note = 0; 
-//       }
+        // Advance by one note in the midiSequence;
+       // note++; 
+       //if( note == 17) {
+       //  note = 0; 
+       //}
 
 //      }
 //      vertex(point.x, point.y, point.z);
