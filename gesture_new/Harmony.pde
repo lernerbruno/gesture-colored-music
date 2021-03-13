@@ -43,8 +43,8 @@ class Harmony {
       } else if (y >= 2*kinect.height/3 && y < kinect.height) {
         // Play I maj7 chord
         chords[2].play(1.0, 1.0);
-        chordTrigger = millis() + int(1000*chords[2].duration());
-        //chordTrigger = millis() + int(1000*beats[0].duration()/4);
+        chordTrigger = millis() + int(1000 * beatDuration/4);
+        //chordTrigger = millis() + int(1000*chords[2].duration());
     
         scale = majorScale;
         return scale;
