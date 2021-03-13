@@ -29,15 +29,15 @@ void setup() {
   melody.make_setup();
   
   // Rhythm
-  SoundFile sample1 = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/samples/096_round-hiphop.aif");
-  SoundFile sample2 = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/samples/096_round-hiphop.aif");
+  SoundFile sample1 = new SoundFile(this, "../samples/096_round-hiphop.aif");
+  SoundFile sample2 = new SoundFile(this, "../samples/096_round-hiphop.aif");
   rhythm = new Rhythm();
   rhythm.make_setup(sample1, sample2);
   
   // Harmony
-  SoundFile chord1 = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/samples/2m7.aif");
-  SoundFile chord2 = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/samples/5M7.aif");
-  SoundFile chord3 = new SoundFile(this, "/Users/brunolerner/workspace/gesture-colored-music/samples/1M7.aif");
+  SoundFile chord1 = new SoundFile(this, "../samples/2m7.aif");
+  SoundFile chord2 = new SoundFile(this, "../samples/5M7.aif");
+  SoundFile chord3 = new SoundFile(this, "../samples/1M7.aif");
   harmony = new Harmony(sample1.duration());
   harmony.make_setup(chord1, chord2, chord3);
   
