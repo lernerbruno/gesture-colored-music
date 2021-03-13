@@ -27,25 +27,19 @@ class Harmony {
       if (y > 0 && y < kinect.height/3){
         // Play II m7 chord
         chords[0].play(1.0, 1.0);
-        //chordTrigger = millis() + int(1000*chords[0].duration());
         chordTrigger = millis() + int(1000 * beatDuration/4);
         scale = harmonicMinor;
         return scale;
       } else if (y >= kinect.height/3 && y < 2*kinect.height/3) {
         // Play V 7 chord
         chords[1].play(1.0, 1.0);
-        //chordTrigger = millis() + int(1000*chords[1].duration());
         chordTrigger = millis() + int(1000 * beatDuration/4);
-    
-        // Play Melody
         scale = superLocrian;
         return scale;
       } else if (y >= 2*kinect.height/3 && y < kinect.height) {
         // Play I maj7 chord
         chords[2].play(1.0, 1.0);
         chordTrigger = millis() + int(1000 * beatDuration/4);
-        //chordTrigger = millis() + int(1000*chords[2].duration());
-    
         scale = majorScale;
         return scale;
       }

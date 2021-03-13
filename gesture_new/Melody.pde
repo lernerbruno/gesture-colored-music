@@ -35,6 +35,8 @@ class Melody {
     env = e;
     kinectHeight = k;
   }
+  
+  // TODO: Mantain a heap of the most clicked notes and only show the highest one (to remove noise)
   void playMelody(int[] scale, int pointY) {
      if (millis() > this.melodyTrigger){
         float mappedNote = map(pointY, 0, this.kinectHeight, 0, 18);
