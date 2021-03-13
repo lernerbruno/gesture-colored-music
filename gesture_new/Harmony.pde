@@ -4,7 +4,6 @@ class Harmony {
   int[] superLocrian = { 
     55,55,57,59,60,62,63,65,66,68,69,71,72,74,75
   }; 
-  
   int[] harmonicMinor = {
     50,52,53,55,57,58,60,62,64,65,67,69,70,72,74
   };
@@ -25,7 +24,7 @@ class Harmony {
     int y = dataProcessed.chordCursor_Y;
     int[] scale = this.scale;
     if (millis() > chordTrigger) {
-      if (y >= 0 && y < kinect.height/3){
+      if (y > 0 && y < kinect.height/3){
         // Play II m7 chord
         chords[0].play(1.0, 1.0);
         //chordTrigger = millis() + int(1000*chords[0].duration());
